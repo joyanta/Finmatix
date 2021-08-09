@@ -1,6 +1,6 @@
 import { Weather } from "src/app/model";
 
-export const londonMockWeather: Weather = {
+export const parisMockWeather: Weather = {
     cod: '200',
     message: 0,
     cnt: 1,
@@ -39,8 +39,8 @@ export const londonMockWeather: Weather = {
       }
     ],
     city: {
-      id: 2643743,
-      name: 'London',
+      id: 999999,
+      name: 'Paris',
       coord: {
         lat: 51.5085,
         lon: -0.1257

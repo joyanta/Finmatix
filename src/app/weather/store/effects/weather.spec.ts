@@ -6,7 +6,7 @@ import { Observable, of } from "rxjs";
 import { WeatherService } from "../../weather.service";
 import { GetWeatherEffect } from "./weather";
 import { WeatherActions } from "../actions";
-import { mockWeather } from "./mock-weather-data";
+import { londonMockWeather } from "./mock-weather-data";
 import { throwError } from 'rxjs';
 
 describe('GetWeatherEffect', () => {
@@ -36,10 +36,10 @@ describe('GetWeatherEffect', () => {
 
     describe('searchForCity$', () => {
         it('should fire search success when weather is retrived', (done) => {
-          const spy = spyOn(httpService, 'searchWeatherForCity').and.returnValue(of(mockWeather));
+          const spy = spyOn(httpService, 'searchWeatherForCity').and.returnValue(of(londonMockWeather));
           actions$ = of(WeatherActions.search);
           effects.searchForCity$.subscribe((res) => {
-            expect(res).toEqual(WeatherActions.searchSuccess({ result: mockWeather }));
+            expect(res).toEqual(WeatherActions.searchSuccess({ result: londonMockWeather }));
             expect(spy).toHaveBeenCalledTimes(1);
             done();
           });

@@ -1,0 +1,21 @@
+<table class="table" data-cy="results">
+  <thead class="thead-dark">
+  <tr>
+    <th scope="col">City</th>
+    <th scope="col">6 AM</th>
+    <th scope="col">12 PM</th>
+    <th scope="col">6 PM</th>
+    <th scope="col">12 AM</th>
+  </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let result of results">
+      <tr>
+        <td scope="row" [attr.data-cy]="result.city">{{result.city}}</td>
+        <ng-container *ngFor="let tempEntry of result?.list">
+          <td scope="row">{{tempEntry.temp}} &deg;</td>
+        </ng-container>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

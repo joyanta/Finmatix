@@ -3,7 +3,6 @@
 import { createAction, props, union } from "@ngrx/store";
 import { Weather } from "src/app/model";
 
-
 export const search = createAction(
     '[Weather] Seach For City',
     props<{ city : string }>()
@@ -16,7 +15,7 @@ export const searchSuccess = createAction(
   
 export const searchFail = createAction(
     '[Weather] Seach For City Fail',
-    props<{ error: string }>()
+    props<{ error: any }>()
 );
 
 const all = union({search, searchSuccess, searchFail });

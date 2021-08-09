@@ -1,4 +1,5 @@
-import { searchSuccess } from '../actions/weather';
+import { HttpErrorResponse } from '@angular/common/http';
+import { searchFail, searchSuccess } from '../actions/weather';
 import { parisMockWeather } from '../effects/mock-paris-weather-data';
 import { londonMockWeather } from '../effects/mock-weather-data';   // possibly put it in a level above
 import * as fromReducer from './weather';
@@ -15,6 +16,19 @@ describe('WeatherReducer', () => {
       expect(state).toBe(initialState);
     });
   });
+
+  
+  describe('error action', () => {
+    it('should have an error state', () => {
+      const { initialState } = fromReducer;
+      const action = searchFail({error: { }})
+      const state = fromReducer.weatherReducer(initialState, action);
+
+      expect(state.error).toBeDefined(); 
+      expect(state.results).toBeDefined([]);
+    });
+  });
+
 
   describe('searchSuccess action', () => {
     it('should retrieve the data for a city and update the state in an immutable way', () => {

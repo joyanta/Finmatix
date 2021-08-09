@@ -47,14 +47,29 @@ describe('GetWeatherEffect', () => {
 
 
         it('should search fail when when service throws and error', (done) => {
-            const spy = spyOn(httpService, 'searchWeatherForCity').and.returnValue(throwError({ error: {} }));
-            actions$ = of(WeatherActions.search);
-            effects.searchForCity$.subscribe((res) => {
-                expect(res.type).toEqual(WeatherActions.searchFail.type);
-                expect(spy).toHaveBeenCalledTimes(1);
-              done();
-            });
+          const spy = spyOn(httpService, 'searchWeatherForCity').and.returnValue(throwError({ error: {
+            headers: {
+              normalizedNames: {},
+              lazyUpdate: null,
+              headers: {}
+            },
+            status: 0,
+            statusText: 'Unknown Error',
+            url: 'https://api.openweathermap.org/data/2.5/forecast',
+            ok: false,
+            name: 'HttpErrorResponse',
+            message: 'Http failure response for https://api.openweathermap.org/data/2.5/forecast: 0 Unknown Error',
+             error: {
+              isTrusted: true
+            }
+          }}));
+          actions$ = of(WeatherActions.search);
+          effects.searchForCity$.subscribe((res) => {
+              expect(res.type).toEqual(WeatherActions.searchFail.type);
+              expect(spy).toHaveBeenCalledTimes(1);
+            done();
           });
+        });
       
     });
   });

@@ -8,7 +8,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run", 
+    "pree2e": "webdriver-manager update --gecko false --standalone false", 
+    "e2e": "protractor"
   },
   "private": true,
   "dependencies": {

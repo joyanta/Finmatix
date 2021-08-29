@@ -8,6 +8,10 @@ import { GetWeatherEffect } from "./weather";
 import { WeatherActions } from "../actions";
 import { londonMockWeather } from "./mock-weather-data";
 import { throwError } from 'rxjs';
+import { cold, hot } from "jasmine-marbles";
+
+import { search, searchFail, searchSuccess } from "../actions/weather";
+
 
 describe('GetWeatherEffect', () => {
     let actions$: Observable<any>;
@@ -30,7 +34,6 @@ describe('GetWeatherEffect', () => {
         ],
       });
       effects = TestBed.inject(GetWeatherEffect);
-     
       httpService = TestBed.inject(WeatherService);
     });
 
@@ -71,6 +74,43 @@ describe('GetWeatherEffect', () => {
           });
         });
       
+    });
+
+
+    describe('searchForCity$ by sarmas marbles', () => {
+
+      it('should fire search success when weather is retrived', () => {
+        actions$ = hot('-ab', {
+          a: search({ city: 'l'}), 
+          b: search({ city: 'london'})
+        });
+
+        spyOn(httpService, 'searchWeatherForCity').and.returnValue(
+          cold('-------a|', { a: londonMockWeather })
+        );
+
+        expect(effects.searchForCity$).toBeObservable(cold('---------b', {
+          b: searchSuccess({ result: londonMockWeather }),
+        }));
+      });
+
+
+      it('should fire searchFail when error is ', () => {
+       
+        const error = new Error();
+        actions$ = hot('-a', {
+          a: search({ city: 'london'})
+        });
+
+        spyOn(httpService, 'searchWeatherForCity').and.returnValue(
+          cold('-#|', {}, error)
+        );
+
+        expect(effects.searchForCity$).toBeObservable(cold('--b', {
+          b: searchFail({ error })
+        }));
+      });
+    
     });
   });
 

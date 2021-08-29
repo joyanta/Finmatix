@@ -21,6 +21,7 @@ export class GetWeatherEffect {
                         }
                     ),
                     catchError(error => {
+                        debugger
                         return of(WeatherActions.searchFail({ error })); 
                     })
                 )

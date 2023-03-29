@@ -24,3 +24,6 @@ this.http.get(url).subscribe((response) => {
 }, (error) => {
   // handle error
 });
+
+
+^[a-zA-Z0-9,&.'-:\s]+$

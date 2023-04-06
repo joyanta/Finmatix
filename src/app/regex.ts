@@ -27,3 +27,14 @@ this.http.get(url).subscribe((response) => {
 
 
 ^[a-zA-Z0-9,&.'-:\s]+$
+
+
+
+function generateRandomPostcode() {
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
+  const outwardCodeLetters = letters.replace(/[CIKMOV]/g, ""); // Exclude letters that don't appear in outward code
+  const outwardCode = `${outwardCodeLetters[Math.floor(Math.random() * outwardCodeLetters.length)]}${letters[Math.floor(Math.random() * letters.length)]}`;
+  const inwardCode = `${numbers[Math.floor(Math.random() * numbers.length)]}${letters[Math.floor(Math.random() * letters.length)]}${letters[Math.floor(Math.random() * letters.length)]}`;
+  return `${outwardCode} ${inwardCode}`;
+}

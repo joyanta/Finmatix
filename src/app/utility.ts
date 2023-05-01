@@ -10,39 +10,27 @@ function trimObjectValues(obj: {[key: string]: string}): {[key: string]: string}
  // https://subscription.packtpub.com/book/web-development/9781838989439/2/ch02lvl1sec14/creating-a-basic-directive-that-allows-you-to-vertically-scroll-to-an-element
 
 
+ import { Injectable } from '@angular/core';
+import { Resolve } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { filter, first, switchMap, tap } from 'rxjs/operators';
+import { AppState } from 'src/app/store';
+import { LoadData } from 'src/app/store/actions/data.actions';
+import { getData } from 'src/app/store/selectors/data.selectors';
 
-//  ng generate directive <directive-name>
+@Injectable()
+export class MyResolver implements Resolve<any> {
 
-import { Directive, ElementRef, Renderer2 } from '@angular/core';
-@Directive({
-  selector: '[appSticky]'
-})
-export class StickyDirective {
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
+  constructor(private store: Store<AppState>) {}
 
-  onWindowScroll() {
-    const element = this.elementRef.nativeElement;
-    const offset = element.offsetTop;
-    const scrollPosition = window.pageYOffset;
-
-    if (scrollPosition >= offset) {
-      this.renderer.addClass(element, 'sticky');
-    } else {
-      this.renderer.removeClass(element, 'sticky');
-    }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+    const id = route.params.id;
+    this.store.dispatch(new LoadData(id));
+    return this.store.select(getData).pipe(
+      filter(data => !!data),
+      first()
+    );
   }
+
 }
-
-
-ngAfterViewInit() {
-  const element = this.elementRef.nativeElement;
-
-  this.renderer.listen(element, 'scroll', () => {
-    this.onWindowScroll();
-  });
-}
-
-
-<div appSticky>
-  <!-- Content -->
-</div>

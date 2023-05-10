@@ -34,3 +34,22 @@ export class MyResolver implements Resolve<any> {
   }
 
 }
+
+
+
+{
+  "type": "node",
+  "request": "launch",
+  "name": "Jest All",
+  "program": "${workspaceFolder}/node_modules/@angular/cli/bin/ng",
+  "args": [
+      "test",
+      "--browsers",
+      "ChromeHeadless",
+      "--watch=false",
+      "--code-coverage",
+      "--no-cache"
+  ],
+  "console": "integratedTerminal",
+  "internalConsoleOptions": "neverOpen"
+}

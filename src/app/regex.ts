@@ -67,3 +67,52 @@ export class DelayedValidationDirective {
   </div>
   <!-- Add more inputs with the directive as needed -->
 </form>
+
+
+
+
+import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angular/core';
+
+@Directive({
+  selector: '[appInputFocus]'
+})
+export class InputFocusDirective {
+  @Output() inputFocused: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  constructor(private elementRef: ElementRef) {}
+
+  @HostListener('focus')
+  onFocus(): void {
+    this.inputFocused.emit(true);
+  }
+
+  @HostListener('blur')
+  onBlur(): void {
+    this.inputFocused.emit(false);
+  }
+}
+
+
+
+<form>
+  <input type="text" appInputFocus (inputFocused)="onInputFocus($event)">
+  <input type="text" appInputFocus (inputFocused)="onInputFocus($event)">
+</form>
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-your-component',
+  templateUrl: './your-component.component.html',
+  styleUrls: ['./your-component.component.css']
+})
+export class YourComponent {
+  onInputFocus(isFocused: boolean): void {
+    if (isFocused) {
+      console.log('Input is focused');
+    } else {
+      console.log('Input is not focused');
+    }
+  }
+}
+

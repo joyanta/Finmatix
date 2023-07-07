@@ -38,3 +38,32 @@ function generateRandomPostcode() {
   const inwardCode = `${numbers[Math.floor(Math.random() * numbers.length)]}${letters[Math.floor(Math.random() * letters.length)]}${letters[Math.floor(Math.random() * letters.length)]}`;
   return `${outwardCode} ${inwardCode}`;
 }
+
+
+
+import { Directive, HostListener } from '@angular/core';
+import { NgControl } from '@angular/forms';
+
+@Directive({
+  selector: '[appDelayedValidation]'
+})
+export class DelayedValidationDirective {
+  constructor(private ngControl: NgControl) {}
+
+  @HostListener('input')
+  onInput() {
+    // Trigger validation when the value changes
+    this.ngControl.control?.updateValueAndValidity({ emitEvent: false });
+  }
+}
+
+<form>
+  <div>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" appDelayedValidation [ngModelOptions]="{ updateOn: 'change' }" required>
+    <div *ngIf="name.invalid && (name.dirty || name.touched)">
+      <div *ngIf="name.errors.required">Name is required.</div>
+    </div>
+  </div>
+  <!-- Add more inputs with the directive as needed -->
+</form>

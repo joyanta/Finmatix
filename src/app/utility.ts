@@ -1,3 +1,31 @@
+function removePropertiesFromObject(fullPropertyObject, propertiesToRemove) {
+  const updatedObject = { ...fullPropertyObject }; // Create a copy of the original object
+
+  propertiesToRemove.forEach(property => {
+    ({ [property]: _, ...updatedObject } = updatedObject);
+    // Destructure the object, omitting the property to remove
+    // The value is assigned to _ as a throwaway variable
+  });
+
+  return updatedObject;
+}
+
+// Test the function with an example
+const fullPropertyObject = {
+  name: 'John',
+  age: 30,
+  city: 'New York',
+  occupation: 'Engineer'
+};
+
+const propertiesToRemove = ['age', 'occupation'];
+const updatedObject = removePropertiesFromObject(fullPropertyObject, propertiesToRemove);
+console.log(updatedObject);
+// Output: { name: 'John', city: 'New York' }
+
+
+
+
 function trimObjectValues(obj: {[key: string]: string}): {[key: string]: string} {
     return Object.entries(obj).reduce((acc: {[key: string]: string}, [key, value]: [string, string]) => {
       acc[key] = value.trim();

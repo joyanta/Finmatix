@@ -1,3 +1,31 @@
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { withLatestFrom, map } from 'rxjs/operators';
+import { selectSelector1, selectSelector2, selectSelector3 } from '../selectors';
+import { someAction, someOtherAction } from '../actions';
+
+@Injectable()
+export class MyEffects {
+  myEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(someAction),
+      withLatestFrom(
+        this.store.select(selectSelector1),
+        this.store.select(selectSelector2),
+        this.store.select(selectSelector3),
+      ),
+      map(([action, selector1Value, selector2Value, selector3Value]) => {
+        // Perform additional actions based on the values from the selectors
+        return someOtherAction({ payload: selector1Value + selector2Value + selector3Value });
+      })
+    )
+  );
+
+  constructor(private actions$: Actions, private store: Store) {}
+}
+
+
+
+
 function removePropertiesFromObject(fullPropertyObject, propertiesToRemove) {
   const updatedObject = { ...fullPropertyObject }; // Create a copy of the original object
 

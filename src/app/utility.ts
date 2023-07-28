@@ -1,3 +1,33 @@
+const getChangedProperties = (currentObject, newObject) => {
+  // Filter properties that belong to newObject but not in currentObject
+  const newProperties = Object.entries(newObject)
+    .filter(([key]) => !currentObject.hasOwnProperty(key))
+    .reduce((result, [key, value]) => {
+      result[key] = value;
+      return result;
+    }, {});
+
+  // Filter properties that exist in both objects and have different values
+  const changedProperties = Object.entries(newObject)
+    .filter(([key, value]) => currentObject.hasOwnProperty(key) && currentObject[key] !== value)
+    .reduce((result, [key, value]) => {
+      result[key] = value;
+      return result;
+    }, {});
+
+  // Merge the newProperties and changedProperties objects
+  return { ...newProperties, ...changedProperties };
+};
+
+// Example usage:
+const currentObject = { a: 1, b: 2, c: 3 };
+const newObject = { b: 3, c: 4, d: 5 };
+const result = getChangedProperties(currentObject, newObject);
+console.log(result); // Output: { b: 3, c: 4, d: 5 }
+
+
+
+
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { withLatestFrom, map } from 'rxjs/operators';
 import { selectSelector1, selectSelector2, selectSelector3 } from '../selectors';

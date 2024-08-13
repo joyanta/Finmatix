@@ -73,3 +73,6 @@ public class BearerTokenEndpointBehavior : IEndpointBehavior
 
     public void Validate(ServiceEndpoint endpoint) { }
 }
+
+
+https://learn.microsoft.com/en-us/archive/blogs/wsdevsol/adding-custom-messageheader-and-http-header-to-a-wcf-method-call-in-a-windows-store-app-or-windows-phone-app

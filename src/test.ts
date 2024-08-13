@@ -76,3 +76,46 @@ public class BearerTokenEndpointBehavior : IEndpointBehavior
 
 
 https://learn.microsoft.com/en-us/archive/blogs/wsdevsol/adding-custom-messageheader-and-http-header-to-a-wcf-method-call-in-a-windows-store-app-or-windows-phone-app
+
+
+
+
+public class CustomXmlObjectSerializer : XmlObjectSerializer
+{
+    public override bool IsStartObject(XmlDictionaryReader reader)
+    {
+        // Implement logic to determine if the reader is at the start of the object
+        return reader.IsStartElement();
+    }
+
+    public override object ReadObject(XmlDictionaryReader reader, bool verifyObjectName)
+    {
+        // Implement logic to read and deserialize the object
+        reader.ReadStartElement();
+        var scheme = reader.ReadElementContentAsString("Scheme", "");
+        var token = reader.ReadElementContentAsString("Token", "");
+        reader.ReadEndElement();
+
+        return new AuthorizationHeader { Scheme = scheme, Token = token };
+    }
+
+    public override void WriteEndObject(XmlDictionaryWriter writer)
+    {
+        // Implement logic to write the end of the object
+        writer.WriteEndElement();
+    }
+
+    public override void WriteObjectContent(XmlDictionaryWriter writer, object graph)
+    {
+        // Implement logic to serialize the object content
+        var authHeader = graph as AuthorizationHeader;
+        writer.WriteElementString("Scheme", authHeader.Scheme);
+        writer.WriteElementString("Token", authHeader.Token);
+    }
+
+    public override void WriteStartObject(XmlDictionaryWriter writer, object graph)
+    {
+        // Implement logic to write the start of the object
+        writer.WriteStartElement("Authorization", "http://yournamespace.com");
+    }
+}

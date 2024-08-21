@@ -147,3 +147,23 @@ public object BeforeSendRequest(ref Message request, IClientChannel channel)
     // Perform additional operations on the 'request' if needed
     return null; // or some state object if you need it for AfterReceiveReply
 }
+
+
+
+public IActionResult YourAction()
+        {
+            // Get the authorization header
+            var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+
+            // Check if the header is not null or empty and starts with "Bearer "
+            if (authHeader != null && authHeader.StartsWith("Bearer "))
+            {
+                // Extract the token
+                var token = authHeader.Substring("Bearer ".Length).Trim();
+
+                // Use the token as needed
+                return Ok(new { Token = token });
+            }
+
+            return Unauthorized("Bearer token not found");
+        }

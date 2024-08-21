@@ -119,3 +119,31 @@ public class CustomXmlObjectSerializer : XmlObjectSerializer
         writer.WriteStartElement("Authorization", "http://yournamespace.com");
     }
 }
+
+
+
+using System;
+using System.Reflection;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+
+public object BeforeSendRequest(ref Message request, IClientChannel channel)
+{
+    // Use reflection to get the non-public InnerChannel property
+    var innerChannelProperty = channel.GetType().GetProperty("InnerChannel", BindingFlags.Instance | BindingFlags.NonPublic);
+
+    if (innerChannelProperty != null)
+    {
+        // Retrieve the value of the InnerChannel property
+        var innerChannel = innerChannelProperty.GetValue(channel, null) as IClientChannel;
+
+        if (innerChannel != null)
+        {
+            // You can now work with the innerChannel
+            // For example, log or inspect its properties
+        }
+    }
+
+    // Perform additional operations on the 'request' if needed
+    return null; // or some state object if you need it for AfterReceiveReply
+}
